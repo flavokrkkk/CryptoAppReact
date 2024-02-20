@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { Card, Layout, List, Spin, Statistic, Tag, Typography} from 'antd';
+import { Card, Layout, List, Statistic, Tag, Typography} from 'antd';
 import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
-import { fakeFetchCrypto, fetchAssets } from '../../api';
-import {capitalize, percentDifference} from '../../utils.js'
- 
+import {capitalize} from '../../utils.js'
+import { useContext} from 'react';
+import CryptoContext, { CryptoContextProvider } from '../../context/cryptoContext.jsx';
+
 
 const {Text} = Typography
 
@@ -11,51 +11,9 @@ const siderStyle = {
     padding: '1rem'
   };
 
-
 const AppSider = () => {
 
-  const [loading, setLoading] = useState(false)
-  const [crypto, setCrypto] = useState([])
-  const [assets, setAssets] = useState([])
-
-
-//UseEffect - который отвечает за запрос на фейк дату и формирует данные
-  useEffect(() => {
-    const preload = async () => {
-        setLoading(true)
-        const { result } = await fakeFetchCrypto()
-        const assets = await fetchAssets()
-
-        setAssets(assets.map(asset => {
-            const coin = result.find(c => c.id === asset.id)
-
-            //coin - рыночная цена
-            //asset - цена за которую мы купили 
-
-            return {
-              //Подсвечивает значение при падении или при росте
-              grow: asset.price < coin.price, // boolean
-
-              //Отвечает за вычет итогового процента падения или роста
-              growPercent: percentDifference(asset.price, coin.price),
-
-              //Отвечает за то сколько у нас капитал определенной монеты
-              totalAmount: asset.amount * coin.price,
-
-              //Подсчитывает выручку пользователя
-              totalProfit: asset.amount * coin.price - asset.amount * asset.price,
-              ...asset
-            }
-        }))
-        setCrypto(result)
-        setLoading(false)
-    }
-    preload()
-  }, [])
-
-  if (loading) {
-    return <Spin fullscreen />
-  }
+  const {assets} = useContext(CryptoContext)
 
 //Отрисовываем все карточки из нашего кошелька крипты
     return (
