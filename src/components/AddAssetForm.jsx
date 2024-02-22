@@ -1,6 +1,6 @@
 //Всплывающее окно - работа с ним
 import { Divider, Flex, Select, Space, Typography, Form, Input, DatePicker, Button, Checkbox, InputNumber, Result } from 'antd';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useCrypto } from '../context/cryptoContext';
 import CoinInfo from './CoinInfo';
 
@@ -21,20 +21,23 @@ const AddAssetForm = ({onClose}) => {
     const [form] = Form.useForm()
 
     //Получаем массив крипто с помощью кастомного хука
-    const { crypto } = useCrypto()
+    const { crypto, addAsset } = useCrypto()
 
     //Состояние для выбранной крипты из селекта
     const [coin, setCoin] = useState(null)
 
+    //Состояние для чека о добавлении крипты
     const [submitted, setSubmitted] = useState(false)
 
+    //
+    const assetRef = useRef()
 
     if (submitted) {
         return (
         <Result
         status="success"
         title="New Asset Added"
-        subTitle={`Added ${42} of ${coin.name} by price ${24}`}
+        subTitle={`Added ${assetRef.current.amount} of ${coin.name} by price ${assetRef.current.price}`}
         extra={[
         <Button type="primary" key="console" onClick={onClose}>
             Close
@@ -66,8 +69,15 @@ const AddAssetForm = ({onClose}) => {
     )}
 
     const onFinish = (values) => {
-        console.log('finish: ', values)
-        setSubmitted(false)
+        const newAsset = {
+            id: coin.id,
+            amount: values.amount,
+            price: values.price,
+            date: values.date ?.$d ?? new Date()
+        }
+        assetRef.current = newAsset
+        setSubmitted(true)
+        addAsset(newAsset)
     }
 
     //Динамическое заполнение формы

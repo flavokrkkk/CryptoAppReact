@@ -16,6 +16,31 @@ export const CryptoContextProvider = ({children}) => {
     const [crypto, setCrypto] = useState([])
     const [assets, setAssets] = useState([])
   
+    const mapAssets = (assets, result) => {
+      return assets.map(asset => {
+        const coin = result.find(c => c.id === asset.id)
+  
+        //coin - рыночная цена
+        //asset - цена за которую мы купили 
+  
+        return {
+          //Подсвечивает значение при падении или при росте
+          grow: asset.price < coin.price, // boolean
+  
+          //Отвечает за вычет итогового процента падения или роста
+          growPercent: percentDifference(asset.price, coin.price),
+  
+          //Отвечает за то сколько у нас капитал определенной монеты
+          totalAmount: asset.amount * coin.price,
+  
+          //Подсчитывает выручку пользователя
+          totalProfit: asset.amount * coin.price - asset.amount * asset.price,
+          ...asset
+        }
+      })
+    }
+
+
   //UseEffect - который отвечает за запрос на фейк дату и формирует данные
     useEffect(() => {
       const preload = async () => {
@@ -23,35 +48,21 @@ export const CryptoContextProvider = ({children}) => {
           const { result } = await fakeFetchCrypto()
           const assets = await fetchAssets()
   
-          setAssets(assets.map(asset => {
-              const coin = result.find(c => c.id === asset.id)
-  
-              //coin - рыночная цена
-              //asset - цена за которую мы купили 
-  
-              return {
-                //Подсвечивает значение при падении или при росте
-                grow: asset.price < coin.price, // boolean
-  
-                //Отвечает за вычет итогового процента падения или роста
-                growPercent: percentDifference(asset.price, coin.price),
-  
-                //Отвечает за то сколько у нас капитал определенной монеты
-                totalAmount: asset.amount * coin.price,
-  
-                //Подсчитывает выручку пользователя
-                totalProfit: asset.amount * coin.price - asset.amount * asset.price,
-                ...asset
-              }
-          }))
+          setAssets(mapAssets(assets, result))
           setCrypto(result)
           setLoading(false)
       }
       preload()
     }, [])
 
+
+    //Функция по добавлению новой крипты в кошелек
+    const addAsset = (newAsset) => {
+      setAssets(prev => mapAssets([...prev, newAsset], crypto))
+    }
+
     return (
-        <CryptoContext.Provider value={{loading, crypto, assets}}>
+        <CryptoContext.Provider value={{loading, crypto, assets, addAsset}}>
             {children}
         </CryptoContext.Provider>
     );

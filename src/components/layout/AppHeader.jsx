@@ -26,7 +26,7 @@ const AppHeader = () => {
     const [modal, setModal] = useState(false)
 
     //Состояние для всплывающего меню
-    const [drawer, setDrawer] = useState(true)
+    const [drawer, setDrawer] = useState(false)
 
     const { crypto } = useCrypto()
 

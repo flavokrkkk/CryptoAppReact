@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout } from 'antd';
+import { Layout, Typography } from 'antd';
 
 const contentStyle = {
     textAlign: 'center',
@@ -10,7 +10,11 @@ const contentStyle = {
   
 const AppContent = () => {
     return (
-        <Layout.Content style={contentStyle}>Content</Layout.Content>
+        <Layout.Content style={contentStyle}>
+            <Typography.Title level={3}>
+                Portfolio: 12000$
+            </Typography.Title>
+        </Layout.Content>
     );
 };
 
