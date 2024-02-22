@@ -26,7 +26,7 @@ const AppHeader = () => {
     const [modal, setModal] = useState(false)
 
     //Состояние для всплывающего меню
-    const [drawer, setDrawer] = useState(false)
+    const [drawer, setDrawer] = useState(true)
 
     const { crypto } = useCrypto()
 
@@ -80,8 +80,10 @@ const AppHeader = () => {
             title='Add Asset'
             onClose={() => setDrawer(false)}
             open={drawer}
+            destroyOnClose
             >
-              <AddAssetForm/>
+              <AddAssetForm
+              onClose={() => setDrawer(false)}/>
           </Drawer>
         </Layout.Header>
     );

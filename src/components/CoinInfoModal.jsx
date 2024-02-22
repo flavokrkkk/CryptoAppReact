@@ -2,6 +2,7 @@
 import React from 'react';
 import { useCrypto } from '../context/cryptoContext';
 import { Divider, Flex, Tag, Typography } from 'antd';
+import CoinInfo from './CoinInfo';
 
 
 const CoinInfoModal = ({coin}) => {
@@ -10,16 +11,10 @@ const { crypto } = useCrypto()
     
     return (
         <>
-        <Flex align='center' justify='center'>
-            <img src={coin.icon} alt={coin.name} style={{ width: '40px', marginRight: '1 0px' }}/>
-            <Typography.Title
-                level={2}
-                style={{ margin: 0 }}
-            >
-                ({coin.symbol})
-                {coin.name}
-            </Typography.Title>
-        </Flex>
+       <CoinInfo
+        coin={coin}
+        withSymbol
+       />
         <Divider/>
         <Typography.Paragraph style={{display: 'flex', justifyContent: 'center'}}>
                 <Typography.Text strong style={{marginRight: '10px'}}>
@@ -43,33 +38,36 @@ const { crypto } = useCrypto()
                     {coin.priceChange1w} %
                 </Tag>
         </Typography.Paragraph>
-        <Typography.Paragraph style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+        <div style={{marginLeft: '65px'}}>
+        <Typography.Paragraph style={{display: 'flex'}}>
                 <Typography.Text strong style={{marginRight: '10px'}}>
                     <span style={{fontSize: 24}}>Price: </span>
                 </Typography.Text>
-                <span style={{marginTop: '5px', fontSize: '18px'}}>{coin.price} $</span>
+                <span style={{marginTop: '5px', fontSize: '18px'}}>{coin.price.toFixed(2)} $</span>
         </Typography.Paragraph>
 
-        <Typography.Paragraph>
-                <Typography.Text>
-                    Price BTC:
+        <Typography.Paragraph style={{display: 'flex'}}>
+                <Typography.Text strong style={{marginRight: '10px'}}>
+                    <span style={{fontSize: 24}}>Price BTC: </span>
                 </Typography.Text>
-                {coin.priceBtc} 
+                <span style={{marginTop: '5px', fontSize: '18px'}}>{coin.priceBtc} </span> 
         </Typography.Paragraph>
 
-        <Typography.Paragraph>
-                <Typography.Text>
-                    Market Cap: 
+        <Typography.Paragraph style={{display: 'flex'}}>
+                <Typography.Text strong style={{marginRight: '10px'}}>
+                   <span style={{fontSize: 24}}>Market Cap: </span> 
                 </Typography.Text>
-                {coin.marketCap}
+                <span style={{marginTop: '5px', fontSize: '18px'}}>{coin.marketCap}</span>
         </Typography.Paragraph>
 
-        <Typography.Paragraph>
-                <Typography.Text>
-                    Contract Address:
+        <Typography.Paragraph style={{display: 'flex'}}>
+                <Typography.Text strong style={{marginRight: '10px'}}>
+                    <span style={{fontSize: 24}}>Contract Address: </span>
                 </Typography.Text>
-                {coin.contractAdress} 
+                <span style={{marginTop: '5px', fontSize: '18px'}}>{coin.symbol}</span>
         </Typography.Paragraph>
+        </div>
+        
         </>
         
     );
