@@ -35,6 +35,7 @@ export const CryptoContextProvider = ({children}) => {
   
           //Подсчитывает выручку пользователя
           totalProfit: asset.amount * coin.price - asset.amount * asset.price,
+          name: coin.name,
           ...asset
         }
       })
