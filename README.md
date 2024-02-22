@@ -1,8 +1,8 @@
-# React + Vite
+# CryptoAppReact
+Данный проект реализован с помощью библиотеки AntDesign, основной функционал написан на React Js
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# Скриншоты данного проекта
 
-Currently, two official plugins are available:
+<h2>Основная страница где находится весь интерактив и динамически подгруженный функционал</h2>
+<img src="https://github.com/flavokrkkk/CryptoAppReact/blob/main/scrins/2024-02-22_13-53-59.png">
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
